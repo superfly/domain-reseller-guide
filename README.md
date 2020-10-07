@@ -254,7 +254,7 @@ The [`createAndRegisterDomain`](https://api.fly.io/graphql/docs/mutation/createA
 
 ## Create and Transfer a Domain
 
-The [`createAndTransferDomain`](https://web.fly.io/graphql/docs/mutation/createAndTransferDomain/) mutation creates a new domain in the provided organization and starts a transfer. The input requires an organization node id which you can find on an [`Organization`](https://web.fly.io/graphql/docs/object/organization/#id) object and an authorization code.
+The [`createAndTransferDomain`](https://api.fly.io/graphql/docs/mutation/createAndTransferDomain/) mutation creates a new domain in the provided organization and starts a transfer. The input requires an organization node id which you can find on an [`Organization`](https://web.fly.io/graphql/docs/object/organization/#id) object and an authorization code.
 
 **Query**
 
