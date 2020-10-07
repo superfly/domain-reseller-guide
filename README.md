@@ -213,7 +213,7 @@ The [`createAndRegisterDomain`](https://web.fly.io/graphql/docs/mutation/createA
       "domain": {
         "id": "vwvgDqn4kxLk58fsSgGAndh8z",
         "name": "example.com",
-        "registrationStatus": "registering",
+        "registrationStatus": "REGISTERING",
         "dnsStatus": "pending",
         "organization": {
           "id": "bjkZRb7BXzk36H381gwbX0z9bXRHZvM",
@@ -252,6 +252,81 @@ The [`createAndRegisterDomain`](https://web.fly.io/graphql/docs/mutation/createA
 }
 ```
 
+## Create and Transfer a Domain
+
+The [`createAndTransferDomain`](https://web.fly.io/graphql/docs/mutation/createAndTransferDomain/) mutation creates a new domain in the provided organization and starts a transfer. The input requires an organization node id which you can find on an [`Organization`](https://web.fly.io/graphql/docs/object/organization/#id) object and an authorization code.
+
+**Query**
+
+```graphql
+  mutation {
+    createAndTransferDomain(input: {
+      organizationId: "bjkZRb7BXzk36H381gwbX0z9bXRHZvM",
+      name: "example.com",
+      authCode: "abc123"
+    }){
+      domain {
+        id
+        name
+        registrationStatus
+        dnsStatus
+        organization {
+          id
+          slug
+        }
+      }
+    }
+  }
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "createAndTransferDomain": {
+      "domain": {
+        "id": "vwvgDqn4kxLk58fsSgGAndh8z",
+        "name": "example.com",
+        "registrationStatus": "TRANSFERRING",
+        "dnsStatus": "pending",
+        "organization": {
+          "id": "bjkZRb7BXzk36H381gwbX0z9bXRHZvM",
+          "slug": "your-org"
+        }
+      }
+    }
+  }
+}
+```
+
+**An error response**
+
+```json
+{
+  "data": {
+    "createAndTransferDomain": null
+  },
+  "errors": [
+    {
+      "message": "Validation failed: Name has already been taken",
+      "locations": [
+        {
+          "line": 2,
+          "column": 3
+        }
+      ],
+      "path": [
+        "createAndTransferDomain"
+      ],
+      "extensions": {
+        "code": "UNPROCESSABLE"
+      }
+    }
+  ]
+}
+```
+
 
 ## Lookup a Domain by Name
 
@@ -279,7 +354,7 @@ query {
       "domain": {
         "id": "vwvgDqn4kxLk58fsSgGAndh8z",
         "name": "example.com",
-        "registrationStatus": "registered",
+        "registrationStatus": "REGISTERED",
         "dnsStatus": "ready"
       }
     }
@@ -321,7 +396,7 @@ query {
            {
              "id": "vwvgDqn4kxLk58fsSgGAndh8z",
              "name": "example.com",
-             "registrationStatus": "registered",
+             "registrationStatus": "REGISTERED",
              "dnsStatus": "ready"
            }
         ]
