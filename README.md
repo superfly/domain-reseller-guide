@@ -137,7 +137,7 @@ query {
 
 ## Searching for Domains
 
-The [`checkDomain`](https://web.fly.io/graphql/docs/mutation/checkdomain/) mutation returns domain availability and pricing.
+The [`checkDomain`](https://api.fly.io/graphql/docs/mutation/checkdomain/) mutation returns domain availability and pricing.
 
 **Query**
 
@@ -180,7 +180,7 @@ mutation {
 
 ## Create and Register a Domain
 
-The [`createAndRegisterDomain`](https://web.fly.io/graphql/docs/mutation/createAndRegisterDomain/) mutation creates and registers a new domain in the provided organization. The input requires an organization node id which you can find on an [`Organization`](https://web.fly.io/graphql/docs/object/organization/#id) object.
+The [`createAndRegisterDomain`](https://api.fly.io/graphql/docs/mutation/createAndRegisterDomain/) mutation creates and registers a new domain in the provided organization. The input requires an organization node id which you can find on an [`Organization`](https://api.fly.io/graphql/docs/object/organization/#id) object.
 
 **Query**
 
@@ -330,7 +330,7 @@ The [`createAndTransferDomain`](https://web.fly.io/graphql/docs/mutation/createA
 
 ## Lookup a Domain by Name
 
-Use the [`domain`](https://web.fly.io/graphql/docs/operation/query/#domain) field to find a domain by name.
+Use the [`domain`](https://api.fly.io/graphql/docs/operation/query/#domain) field to find a domain by name.
 
 **Query**
 
@@ -364,7 +364,7 @@ query {
 
 ## List all domains
 
-Domains are scoped to an organization. Use the [`domains`](https://web.fly.io/graphql/docs/object/organization/#domains) field on an organization to access it's domains.
+Domains are scoped to an organization. Use the [`domains`](https://api.fly.io/graphql/docs/object/organization/#domains) field on an organization to access it's domains.
 
 **Query**
 
@@ -408,7 +408,7 @@ query {
 
 ## Add a DNS Record to a Domain
 
-The [`createDnsRecord`](https://web.fly.io/graphql/docs/mutation/creatednsrecord/) mutation creates a DNS record in the provided domain's hosted zone. The input requires a domain's node id which you can find on a [`Domain`](https://web.fly.io/graphql/docs/object/domain/#id) object.
+The [`createDnsRecord`](https://api.fly.io/graphql/docs/mutation/creatednsrecord/) mutation creates a DNS record in the provided domain's hosted zone. The input requires a domain's node id which you can find on a [`Domain`](https://api.fly.io/graphql/docs/object/domain/#id) object.
 
 **Query**
 
