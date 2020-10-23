@@ -47,8 +47,8 @@ To use it, you first need to create a portal using the createDnsPortal mutation.
 
 To create a session for a customer
 
-1. lookup the domain and portal ids using your organization slug, portal name, and domain name
-2. create a session using the portal id and domain id
+1. lookup the domain and portal ids using your organization slug, portal name, and domain name. [Example](#lookup-a-portal-and-domain)
+2. create a session using the portal id and domain id [Example](#create-a-dns-portal-session)
 3. redirect the customer to the url returned from the createDnsPortalSession mutation.
 
 
