@@ -39,7 +39,18 @@ Once DNS and SSL is configured, requets to the new domain will reach your web ap
 
 ## DNS Management Portal
 
-Inevitability your customers will need to manage custom DNS records for their domain, such as mail servers or Google domain verification records. We're going to provide a DNS management portal sporting a minimal branded UI for creating and modifying DNS records. To use it, you'll use our API to generate a signed url which will render the portal for a limited time. 
+Inevitability your customers will need to manage custom DNS records for their domain, such as mail servers or Google domain verification records. You can use the DNS management portal api to create minimal branded UIs to let your customers create and modify DNS records themselves. To use it, you'll use our API to generate a signed url which will render the portal for a limited time. 
+
+![Example DNS Portal](/docs/example-portal.png "Example DNS Portal")
+
+To use it, you first need to create a portal using the createDnsPortal mutation. It's helpful to name the portal and lookup on demand as opposed to storing the ID.
+
+To create a session for a customer
+
+1. lookup the domain and portal ids using your organization slug, portal name, and domain name
+2. create a session using the portal id and domain id
+3. redirect the customer to the url returned from the createDnsPortalSession mutation.
+
 
 # Using the GraphQL API
 
@@ -419,7 +430,7 @@ mutation {
       domainId: "vwvgDqn4kxLk58fsSgGAndh8z"
       type: A
       rdata: "1.2.3.4"
-      name: "www",
+      name: "www"
       ttl: 300
     }
   ) {
@@ -454,4 +465,132 @@ mutation {
   }
 }
 ```
+
+## Create a DNS Portal
+
+The [`createDnsPortal`](https://api.fly.io/graphql/docs/mutation/creatednsportal/) mutation creates a DNS portal in the provided organization. The input requires an organization's node id which you can find on an [`Domain`](https://api.fly.io/graphql/docs/object/organization/#id) object. Portals can optionally be named to make lookups easier.
+
+There are several options for customizing the portal:
+
+1. Return URL - use the `returnUrl` and `returnUrlText` input fields to customize the return button. If not provided no return button will be displayed.
+2. Support URL - use the `supportUrl` and `supportUrlText` input fields to customize the support button. If not provided no support button will be displayed.
+3. Title - customize the page title with the `title` input field. Defaults to `"{organization name} DNS"` if omitted.
+4. Colors - customize the primary color (nav bar background color) and the accent color (link and button color) with the `primaryColor` and `accentColor` input fields. Defaults to a bland but functional gray and blueish theme.
+
+
+**Query**
+
+```graphql
+mutation {
+  createDnsPortal(
+    input: {
+      organizationId: "vwvgDqn4kxLk58fsSgGAndh8z"
+      name: "example-production"
+      title: "Example DNS Portal"
+      returnUrl: "https://example.com/customer/123"
+      returnUrlText: "Back to Example"
+      supportUrl: "https://help.example.com/dns"
+      supportUrlText: "Help"
+    }
+  ) {
+    dnsPortal {
+      id
+      name
+    }
+  }
+}
+
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "createDnsPortal": {
+      "dnsPortal": {
+        "id": "P4XYgBwwqqKHwKVmGeaznAgGu6D28nV",
+        "name": "example-production"
+      }
+    }
+  }
+}
+```
+
+
+## Create a DNS Portal Session
+
+The [`createDnsPortalSession`](https://api.fly.io/graphql/docs/mutation/creatednsportalsession/) mutation creates a time-limited session for the given dns portal and domain. The input requires a [`DNSPortal` node id](https://api.fly.io/graphql/docs/object/organization/#id) and a [`Domain` node id](https://api.fly.io/graphql/docs/object/domain/#id). The response object contains the portal session URL.
+
+You can optionally customize individual sessions with the [`title`](https://api.fly.io/graphql/docs/input_object/creatednsportalsessioninput/#title), [`returnUrl`](https://api.fly.io/graphql/docs/input_object/creatednsportalsessioninput/#returnurl), and [`returnUrlText`](https://api.fly.io/graphql/docs/input_object/creatednsportalsessioninput/#returnurltext) input fields. If not provided the portal's default values will be used.
+
+**Query**
+
+```graphql
+mutation {
+  createDnsPortalSession(
+    input: {
+      dnsPortalId: "60RjyPqOlGVVVuDjAdsJp5b"
+      domainId: "VJMgmOfdDA45N4kT809"
+    }
+  ) {
+    dnsPortalSession {
+      id
+      url
+    }
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "createDnsPortalSession": {
+      "dnsPortalSession": {
+        "id": "G19dsfdfAZPjGVb42aHVOLmO4bOwlZ1iNYkggM",
+        "url": "https://portal.fly.io/dns/44227101de820cebae419f804838753e6b94567bcf6f951272b0d5f9ac31735d"
+      }
+    }
+  }
+}
+```
+
+## Lookup a portal and domain
+
+Creating a DNS Portal Session requires a DNSPortal node id and a Domain node id. You can look both of those up as needed using the organization slug, portal name, and the domain name.
+
+**Query**
+
+```graphql
+query {
+  organization(slug: "example-org") {
+    dnsPortal(name: "example-production") {
+      id
+    }
+  }
+  domain(name: "example.com") {
+    id
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "organization": {
+      "dnsPortal": {
+        "id": "60RjyPqOdfgdlGVVVuDjAJp5b"
+      },
+      "domain": {
+        "id": "jwjGDMyzsdfsdex2eOhYV0"
+      }
+    }
+  }
+}
+```
+
 
