@@ -2,6 +2,31 @@
 
 This repo is a living guide on reselling domains with fly for SaaS app builders.
 
+- [Domain Reseller Guide](#domain-reseller-guide)
+  - [How It works](#how-it-works)
+  - [Billing](#billing)
+  - [Implementation](#implementation)
+  - [DNS Management Portal](#dns-management-portal)
+- [Using the GraphQL API](#using-the-graphql-api)
+  - [Endpoint](#endpoint)
+  - [Authentication](#authentication)
+  - [Making Requests](#making-requests)
+  - [Playground](#playground)
+  - [Object IDs](#object-ids)
+    - [Lookup organization by slug](#lookup-organization-by-slug)
+    - [Lookup domain by name](#lookup-domain-by-name)
+- [Examples](#examples)
+  - [Searching for Domains](#searching-for-domains)
+  - [Create and Register a Domain](#create-and-register-a-domain)
+  - [Create and Transfer a Domain](#create-and-transfer-a-domain)
+  - [Lookup a Domain by Name](#lookup-a-domain-by-name)
+  - [List all domains](#list-all-domains)
+  - [Add a DNS Record to a Domain](#add-a-dns-record-to-a-domain)
+  - [Create a DNS Portal](#create-a-dns-portal)
+  - [Create a DNS Portal Session](#create-a-dns-portal-session)
+  - [Lookup a portal and domain](#lookup-a-portal-and-domain)
+
+
 ## How It works
 Fly is launching APIs for programatic domain registration and DNS management. You can use these APIs to integrate custom domain reselling into your app. Domains are registered by fly (which means free WHOIS privacy for your customers) and can be transferred out anytime. 
 
